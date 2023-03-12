@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +20,13 @@ public class ProductService {
 
     private ProductRepository productRepository;
     private PlainProductRepository plainProductRepository;
+    private SupplierService supplierService;
 
     @Autowired
-    public void setProductRepository(ProductRepository productRepository, PlainProductRepository plainProductRepository){
+    public void setProductRepository(ProductRepository productRepository, PlainProductRepository plainProductRepository, SupplierService supplierService){
         this.productRepository = productRepository;
         this.plainProductRepository = plainProductRepository;
+        this.supplierService = supplierService;
     }
 
     //if exist, update. if not, create.
@@ -38,8 +41,10 @@ public class ProductService {
 
     public Product findOne(String id){
         Optional<Product> product = productRepository.findById(id);
-        return product.isPresent() ? product.get() : null;
+//        return product.isPresent() ? product.get() : null;
+        return product.orElse(null);
     }
+
 
     public Iterable<Product> findAll(){
         return productRepository.findAll();
@@ -72,5 +77,10 @@ public class ProductService {
 
     public List<Product> findByCategory(Long categoryId){
         return productRepository.findProductByCategory(categoryId);
+    }
+
+    public List<Product> findBySupplier(Long supplierId){
+        Supplier supplier = this.supplierService.findOne(supplierId);
+        return supplier == null ? new ArrayList<>() : productRepository.findProductBySupplier(supplier);
     }
 }

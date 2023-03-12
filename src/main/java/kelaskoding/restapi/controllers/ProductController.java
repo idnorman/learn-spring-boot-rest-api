@@ -87,7 +87,6 @@ public class ProductController {
 
     @PostMapping("/add/supplier/{id}")
     public void addSupplier(@RequestBody Supplier supplier, @PathVariable("id") String productId){
-
         productService.addSupplier(supplier, productId);
     }
 
@@ -105,4 +104,10 @@ public class ProductController {
     public List<Product> getProductByCategory(@PathVariable("categoryId") Long categoryId){
         return productService.findByCategory(categoryId);
     }
+
+    @GetMapping("/search/supplier/{supplierId}")
+    public List<Product> getProductBySupplier(@PathVariable("supplierId") Long supplierId){
+        return productService.findBySupplier(supplierId);
+    }
+
 }
