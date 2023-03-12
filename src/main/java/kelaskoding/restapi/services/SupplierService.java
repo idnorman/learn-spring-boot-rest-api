@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,17 @@ public class SupplierService {
     }
     public void deleteOne(Long id){
         supplierRepository.deleteById(id);
+    }
+    public Supplier findByEmail(String email){
+        return supplierRepository.findByEmail(email);
+    }
+    public List<Supplier> findByName(String name){
+        return supplierRepository.findByNameContains(name);
+    }
+    public List<Supplier> findByNameStartsWith(String prefix){
+        return supplierRepository.findByNameStartsWith(prefix);
+    }
+    public List<Supplier> findByNameContainsOrEmailContains(String name, String email){
+        return supplierRepository.findByNameContainsOrEmailContains(name, email);
     }
 }

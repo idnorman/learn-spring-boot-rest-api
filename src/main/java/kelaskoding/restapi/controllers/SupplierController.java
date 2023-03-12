@@ -1,6 +1,7 @@
 package kelaskoding.restapi.controllers;
 
 import kelaskoding.restapi.dto.ResponseData;
+import kelaskoding.restapi.dto.SearchData;
 import kelaskoding.restapi.dto.SupplierData;
 import kelaskoding.restapi.entities.Supplier;
 import kelaskoding.restapi.services.SupplierService;
@@ -12,7 +13,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/supplier")
@@ -87,6 +90,26 @@ public class SupplierController {
     @DeleteMapping("/delete/{id}")
     public void deleteOne(@PathVariable("id") Long id){
         this.supplierService.deleteOne(id);
+    }
+
+    @PostMapping("/find-by-email")
+    public Supplier findSupplierByEmail(@RequestBody SearchData searchData){
+        return supplierService.findByEmail(searchData.getSearchKey());
+    }
+
+    @PostMapping("/find-by-name")
+    public List<Supplier> findByName(@RequestBody SearchData searchData){
+        return supplierService.findByName(searchData.getSearchKey());
+    }
+
+    @PostMapping("/find-by-name-suffix")
+    public List<Supplier> findByNameStartsWith(@RequestBody SearchData searchData){
+        return supplierService.findByNameStartsWith(searchData.getSearchKey());
+    }
+
+    @PostMapping("/find-by-name-or-email")
+    public List<Supplier> findByNameOrEmail(@RequestBody SearchData searchData){
+        return supplierService.findByNameContainsOrEmailContains(searchData.getSearchKey(), searchData.getOtherSearchKey());
     }
 
 }
