@@ -3,6 +3,7 @@ package kelaskoding.restapi.services;
 import kelaskoding.restapi.entities.Category;
 import kelaskoding.restapi.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,13 @@ public class CategoryService {
     public void deleteOne(Long id){
         this.categoryRepository.deleteById(id);
     }
+
+    public Iterable<Category> findByName(String name, Pageable pageable){
+        return categoryRepository.findByNameContains(name, pageable);
+    }
+
+    public Iterable<Category> batchSave(Iterable<Category> categories){
+        return categoryRepository.saveAll(categories);
+    }
+
 }
